@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESIGNER MADNESS - Luxury Price Insanity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 35px,
+                    rgba(255,255,255,.005) 35px,
+                    rgba(255,255,255,.005) 70px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        header {
+            background: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.95) 100%);
+            color: #fff;
+            padding: 25px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 200;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, #fff 0%, transparent 100%);
+        }
+
+        .twitter-link {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            padding: 10px;
+            position: relative;
+        }
+
+        .twitter-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .twitter-link:hover::before {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .twitter-link:hover {
+            transform: rotate(-5deg);
+        }
+
+        .subtitle {
+            text-align: center;
+            padding: 50px 20px 40px;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            letter-spacing: 0.1em;
+            text-transform: lowercase;
+        }
+
+        .listings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .listing-card {
+            background: #0f0f0f;
+            border-radius: 0;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .listing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 1;
+        }
+
+        .listing-card:hover::before {
+            opacity: 1;
+        }
+
+        .listing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.1);
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.4),
+                0 0 0 1px rgba(255,255,255,0.1);
+        }
+
+        .listing-card:nth-child(even) {
+            transform: translateY(20px);
+        }
+
+        .listing-card:nth-child(even):hover {
+            transform: translateY(12px);
+        }
+
+        .card-number {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.02);
+            z-index: 1;
+            line-height: 1;
+        }
+
+        .sold-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            color: #ff4444;
+            padding: 6px 20px;
+            border: 1px solid #ff4444;
+            font-weight: 400;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            z-index: 10;
+            letter-spacing: 0.2em;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            background-color: #0a0a0a;
+            position: relative;
+            filter: grayscale(20%);
+            transition: filter 0.4s;
+        }
+
+        .listing-card:hover .item-image {
+            filter: grayscale(0%);
+        }
+
+        .item-details {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .item-title::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: #666;
+            flex-shrink: 0;
+        }
+
+        .item-description {
+            color: #888;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .price-section {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .price {
+            font-size: 2.8rem;
+            font-weight: 100;
+            color: #fff;
+            position: relative;
+            letter-spacing: -0.02em;
+        }
+
+        .price::after {
+            content: 'USD';
+            position: absolute;
+            top: 0;
+            right: -35px;
+            font-size: 0.7rem;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+        }
+
+        .verify-link {
+            background-color: transparent;
+            color: #666;
+            padding: 10px 0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            position: relative;
+        }
+
+        .verify-link::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #fff;
+            transition: width 0.3s;
+        }
+
+        .verify-link:hover {
+            color: #fff;
+        }
+
+        .verify-link:hover::after {
+            width: 100%;
+        }
+
+        /* Featured card style */
+        .listing-card.featured {
+            grid-column: span 2;
+        }
+
+        .listing-card.featured .item-image {
+            height: 400px;
+        }
+
+        .listing-card.featured .price {
+            font-size: 3.5rem;
+        }
+
+        /* Accent elements */
+        .accent-line {
+            position: fixed;
+            width: 1px;
+            height: 100vh;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+            top: 0;
+            z-index: 0;
+        }
+
+        .accent-line:nth-child(1) { left: 10%; }
+        .accent-line:nth-child(2) { left: 30%; }
+        .accent-line:nth-child(3) { right: 30%; }
+        .accent-line:nth-child(4) { right: 10%; }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+                letter-spacing: 0.3em;
+            }
+            
+            .listings-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .listing-card.featured {
+                grid-column: span 1;
+            }
+
+            .listing-card:nth-child(even) {
+                transform: none;
+            }
+
+            .price {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .listing-card {
+            animation: fadeIn 0.6s ease-out backwards;
+        }
+
+        .listing-card:nth-child(1) { animation-delay: 0.1s; }
+        .listing-card:nth-child(2) { animation-delay: 0.2s; }
+        .listing-card:nth-child(3) { animation-delay: 0.3s; }
+        .listing-card:nth-child(4) { animation-delay: 0.4s; }
+        .listing-card:nth-child(5) { animation-delay: 0.5s; }
+        .listing-card:nth-child(6) { animation-delay: 0.6s; }
+        .listing-card:nth-child(7) { animation-delay: 0.7s; }
+        .listing-card:nth-child(8) { animation-delay: 0.8s; }
+        .listing-card:nth-child(9) { animation-delay: 0.9s; }
+    </style>
+</head>
+<body>
+    <!-- Accent lines -->
+    <div class="accent-line"></div>
+    <div class="accent-line"></div>
+    <div class="accent-line"></div>
+    <div class="accent-line"></div>
+
+    <header>
+        <div class="header-content">
+            <h1>Designer</h1>
+            <a href="https://twitter.com/yourusername" target="_blank" class="twitter-link">
+                𝕏
+            </a>
+        </div>
+    </header>
+
+    <p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+
+    <div class="listings-container">
+        <!-- Balenciaga Trash Bag -->
+        <div class="listing-card featured">
+            <span class="card-number">01</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="trash.png" alt="Balenciaga Trash Bag" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Balenciaga Trash Bag</h2>
+                <p class="item-description">A literal roll of packing tape transformed into a "luxury bracelet." Yes, it's exactly what you think - adhesive tape with a logo.</p>
+                <div class="price-section">
+                    <span class="price">$1790</span>
+                    <a href="https://hypebeast.com/2022/8/balenciaga-winter-2022-trash-pouch-bag-runway-demna-gvasalia-release-information" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tiffany Paper Clip -->
+        <div class="listing-card">
+            <span class="card-number">02</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="brick.png" alt="Tiffany Paper Clip" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Supreme</h2>
+                <p class="item-description">Just a brick - with the supreme logo</p>
+                <div class="price-section">
+                    <span class="price">$30</span>
+                    <a href="https://www.mensjournal.com/travel/skate-brand-supreme-sells-clay-bricks-for-30-internet-goes-wild#:~:text=On%20Thursday%2C%20skate%20and%20fashion,your%20average%20red%20clay%20brick." class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balenciaga Shopping Bag -->
+        <div class="listing-card">
+            <span class="card-number">03</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Balenciaga+Shopping+Bag" alt="Balenciaga Shopping Bag" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Balenciaga Leather Shopping Bag</h2>
+                <p class="item-description">A $2,145 leather bag designed to look exactly like a free paper shopping bag. Peak fashion irony achieved.</p>
+                <div class="price-section">
+                    <span class="price">$2,145</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supreme Brick -->
+        <div class="listing-card">
+            <span class="card-number">04</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Supreme+Brick" alt="Supreme Brick" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Supreme Clay Brick</h2>
+                <p class="item-description">A regular construction brick with "Supreme" stamped on it. Originally $30, now reselling for hundreds. It's literally a brick.</p>
+                <div class="price-section">
+                    <span class="price">$250</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gucci Tennis Ball -->
+        <div class="listing-card">
+            <span class="card-number">05</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Gucci+Tennis+Ball" alt="Gucci Tennis Ball" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Gucci Tennis Ball Set</h2>
+                <p class="item-description">Four tennis balls in a fancy case. They bounce exactly like $3 tennis balls because physics doesn't care about logos.</p>
+                <div class="price-section">
+                    <span class="price">$170</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prada Paper Clip -->
+        <div class="listing-card">
+            <span class="card-number">06</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Prada+Paper+Clip" alt="Prada Paper Clip" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Prada Sterling Silver Paper Clip</h2>
+                <p class="item-description">Because Tiffany wasn't enough, Prada made their own overpriced paper clip. This one's "only" $185 - what a bargain!</p>
+                <div class="price-section">
+                    <span class="price">$185</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Balenciaga Destroyed Sneakers -->
+        <div class="listing-card featured">
+            <span class="card-number">07</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/800x400/0a0a0a/333?text=Balenciaga+Destroyed+Sneakers" alt="Balenciaga Destroyed Sneakers" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Balenciaga "Destroyed" Sneakers</h2>
+                <p class="item-description">Pre-destroyed sneakers that look like they've been through a wood chipper. Because why destroy your own shoes when you can pay $1,850 for pre-destroyed ones?</p>
+                <div class="price-section">
+                    <span class="price">$1,850</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saint Laurent Trash Bag -->
+        <div class="listing-card">
+            <span class="card-number">08</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Saint+Laurent+Trash+Bag" alt="Saint Laurent Trash Bag" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Saint Laurent "Trash Pouch"</h2>
+                <p class="item-description">A leather pouch designed to look like a garbage bag. Taking "one person's trash is another's treasure" to new heights.</p>
+                <div class="price-section">
+                    <span class="price">$890</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Versace Safety Pin -->
+        <div class="listing-card">
+            <span class="card-number">09</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Versace+Safety+Pin" alt="Versace Safety Pin" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Versace Gold Safety Pin</h2>
+                <p class="item-description">A safety pin. In gold. For $295. That's it. That's the product. Pin your money directly to your clothes instead.</p>
+                <div class="price-section">
+                    <span class="price">$295</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
