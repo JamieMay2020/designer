@@ -354,6 +354,63 @@
             }
         }
 
+        /* Tab styles */
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tab-nav {
+            display: inline-flex;
+            gap: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: #666;
+            padding: 15px 40px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            font-family: inherit;
+        }
+
+        .tab-button:first-child {
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tab-button.active {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-button:hover:not(.active) {
+            color: #aaa;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #fff;
+        }
+
+        #junk-section {
+            display: none;
+        }
+
         /* Loading animation */
         @keyframes fadeIn {
             from {
@@ -399,18 +456,26 @@
 
     <p class="subtitle">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
 
-    <div class="listings-container">
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+        <div class="tab-nav">
+            <button class="tab-button active" onclick="switchTab('clothes')">Clothes</button>
+            <button class="tab-button" onclick="switchTab('junk')">Items</button>
+        </div>
+    </div>
+
+    <div class="listings-container" id="clothes-section">
         <!-- Balenciaga Trash Bag -->
         <div class="listing-card featured">
             <span class="card-number">01</span>
             <span class="sold-badge">SOLD</span>
-            <img src="trash.png" alt="Balenciaga Trash Bag" class="item-image">
+            <img src="croc.png" alt="Balenciaga Trash Bag" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Balenciaga Trash Bag</h2>
-                <p class="item-description">A literal roll of packing tape transformed into a "luxury bracelet." Yes, it's exactly what you think - adhesive tape with a logo.</p>
+                <h2 class="item-title">Hermes Crocodile T-shirt</h2>
+                <p class="item-description">A T-Shirt made from entirely crocodile skin, no logo, no print.</p>
                 <div class="price-section">
-                    <span class="price">$1790</span>
-                    <a href="https://hypebeast.com/2022/8/balenciaga-winter-2022-trash-pouch-bag-runway-demna-gvasalia-release-information" class="verify-link">Verify →</a>
+                    <span class="price">$91,500</span>
+                    <a href="https://www.luxuo.com/style/fashion/hermes-crocodile-t-shirt.html" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
@@ -419,13 +484,13 @@
         <div class="listing-card">
             <span class="card-number">02</span>
             <span class="sold-badge">SOLD</span>
-            <img src="brick.png" alt="Tiffany Paper Clip" class="item-image">
+            <img src="dress.png" alt="Tiffany Paper Clip" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Supreme</h2>
-                <p class="item-description">Just a brick - with the supreme logo</p>
+                <h2 class="item-title">Chanel Coat</h2>
+                <p class="item-description">A vintage Chanel evening coat sold</p>
                 <div class="price-section">
-                    <span class="price">$30</span>
-                    <a href="https://www.mensjournal.com/travel/skate-brand-supreme-sells-clay-bricks-for-30-internet-goes-wild#:~:text=On%20Thursday%2C%20skate%20and%20fashion,your%20average%20red%20clay%20brick." class="verify-link">Verify →</a>
+                    <span class="price">$380,000</span>
+                    <a href="https://uk.style.yahoo.com/vintage-chanel-evening-coat-sells-161500379.html?utm_source=chatgpt.com&guccounter=1&guce_referrer=aHR0cHM6Ly9jaGF0Z3B0LmNvbS8&guce_referrer_sig=AQAAAJyJMGbM0tRqmhYL5tEnAy0fGOAoUndiW_xJhUoxSL2cEJvnsw1WMY2qHIBau8RIEluJoQdblzmIgDdcld62fYwANe2XT77dk4Bmh5T4Yos_F4tc0UMSQUe8fo4JYsGIRgIu0VGW0Pv82eMhiPm5s1qYLDnI0y9f9ez9h1b50As3" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
@@ -434,13 +499,13 @@
         <div class="listing-card">
             <span class="card-number">03</span>
             <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Balenciaga+Shopping+Bag" alt="Balenciaga Shopping Bag" class="item-image">
+            <img src="pink.png" alt="Louis Vuitton Skateboard" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Balenciaga Leather Shopping Bag</h2>
-                <p class="item-description">A $2,145 leather bag designed to look exactly like a free paper shopping bag. Peak fashion irony achieved.</p>
+                <h2 class="item-title">Christian Dior Pink Fur Coat</h2>
+                <p class="item-description">A coat made of raccoon fur dyed pink.</p>
                 <div class="price-section">
-                    <span class="price">$2,145</span>
-                    <a href="#" class="verify-link">Verify →</a>
+                    <span class="price">$65,000</span>
+                    <a href="https://www.1stdibs.com/fashion/clothing/coats-outerwear/christian-dior-john-galliano-fuchsia-evening-coat-fur-trim-fw-2007/id-v_23873612/?gad_source=1&gad_campaignid=19636511994&gbraid=0AAAAADhpJtUHoNQtjKq6PZzc6WNZqMjmS&gclid=Cj0KCQjw1JjDBhDjARIsABlM2Su2bIMrNHUNwMzI5lMHPSZGHQO245ycujwaO_bKb5rrjvhjAZTH-oUaAs7HEALw_wcB&gclsrc=aw.ds" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
@@ -449,13 +514,13 @@
         <div class="listing-card">
             <span class="card-number">04</span>
             <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Supreme+Brick" alt="Supreme Brick" class="item-image">
+            <img src="diamon.png" alt="Supreme Brick" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Supreme Clay Brick</h2>
-                <p class="item-description">A regular construction brick with "Supreme" stamped on it. Originally $30, now reselling for hundreds. It's literally a brick.</p>
+                <h2 class="item-title">Hermes Diamond Encrusted Bag</h2>
+                <p class="item-description">A handbag that uses rare himalayan diamonds with crocodile skin.</p>
                 <div class="price-section">
-                    <span class="price">$250</span>
-                    <a href="#" class="verify-link">Verify →</a>
+                    <span class="price">$4550,000</span>
+                    <a href="https://herberkinbags.eu/product/hermes-birkin-25-himalaya-niloticus-crocodile-diamond-encrusted-palladium-hardware/?gad_source=1&gad_campaignid=22460947156&gbraid=0AAAAA_ZNr84j84qCoPudt--LpZVLRafBv&gclid=Cj0KCQjw1JjDBhDjARIsABlM2StnO9RbQ7T1Nth51__jI88qFk95sCWTP-dSa8UOKh1AZkRxoJdW1t4aAgANEALw_wcB" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
@@ -464,12 +529,12 @@
         <div class="listing-card">
             <span class="card-number">05</span>
             <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Gucci+Tennis+Ball" alt="Gucci Tennis Ball" class="item-image">
+            <img src="coat.png" alt="Gucci Tennis Ball" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Gucci Tennis Ball Set</h2>
-                <p class="item-description">Four tennis balls in a fancy case. They bounce exactly like $3 tennis balls because physics doesn't care about logos.</p>
+                <h2 class="item-title">Kiton Crocodile Leather Coat</h2>
+                <p class="item-description">Potentially the most expensive coat in the world at the moment, made from crocodile leather and cashmere.</p>
                 <div class="price-section">
-                    <span class="price">$170</span>
+                    <span class="price">$240,000</span>
                     <a href="#" class="verify-link">Verify →</a>
                 </div>
             </div>
@@ -479,61 +544,117 @@
         <div class="listing-card">
             <span class="card-number">06</span>
             <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Prada+Paper+Clip" alt="Prada Paper Clip" class="item-image">
+            <img src="air.png" alt="Prada Paper Clip" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Prada Sterling Silver Paper Clip</h2>
-                <p class="item-description">Because Tiffany wasn't enough, Prada made their own overpriced paper clip. This one's "only" $185 - what a bargain!</p>
+                <h2 class="item-title">LV x Nike Air Force 1</h2>
+                <p class="item-description">Designed by Virgil Abloh who was artistic director at LV menswear</p>
                 <div class="price-section">
                     <span class="price">$185</span>
                     <a href="#" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
-
-        <!-- Balenciaga Destroyed Sneakers -->
-        <div class="listing-card featured">
-            <span class="card-number">07</span>
-            <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/800x400/0a0a0a/333?text=Balenciaga+Destroyed+Sneakers" alt="Balenciaga Destroyed Sneakers" class="item-image">
-            <div class="item-details">
-                <h2 class="item-title">Balenciaga "Destroyed" Sneakers</h2>
-                <p class="item-description">Pre-destroyed sneakers that look like they've been through a wood chipper. Because why destroy your own shoes when you can pay $1,850 for pre-destroyed ones?</p>
-                <div class="price-section">
-                    <span class="price">$1,850</span>
-                    <a href="#" class="verify-link">Verify →</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Saint Laurent Trash Bag -->
-        <div class="listing-card">
-            <span class="card-number">08</span>
-            <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Saint+Laurent+Trash+Bag" alt="Saint Laurent Trash Bag" class="item-image">
-            <div class="item-details">
-                <h2 class="item-title">Saint Laurent "Trash Pouch"</h2>
-                <p class="item-description">A leather pouch designed to look like a garbage bag. Taking "one person's trash is another's treasure" to new heights.</p>
-                <div class="price-section">
-                    <span class="price">$890</span>
-                    <a href="#" class="verify-link">Verify →</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Versace Safety Pin -->
-        <div class="listing-card">
-            <span class="card-number">09</span>
-            <span class="sold-badge">SOLD</span>
-            <img src="https://via.placeholder.com/400x300/0a0a0a/333?text=Versace+Safety+Pin" alt="Versace Safety Pin" class="item-image">
-            <div class="item-details">
-                <h2 class="item-title">Versace Gold Safety Pin</h2>
-                <p class="item-description">A safety pin. In gold. For $295. That's it. That's the product. Pin your money directly to your clothes instead.</p>
-                <div class="price-section">
-                    <span class="price">$295</span>
-                    <a href="#" class="verify-link">Verify →</a>
-                </div>
-            </div>
-        </div>
     </div>
+     
+
+    <!-- Junk Section (initially hidden) -->
+    <div class="listings-container" id="junk-section" style="display: none;">
+        <!-- Supreme Oreo -->
+        <div class="listing-card">
+            <span class="card-number">01</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="punch.png" alt="Supreme Oreo" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Supreme Oreo Cookie</h2>
+                <p class="item-description">A regular punching bag wrapped in the LV pattern.</p>
+                <div class="price-section">
+                    <span class="price">$175,000</span>
+                    <a href="https://www.luxuo.com/style/fashion/hermes-crocodile-t-shirt.html" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hermes Basketball -->
+        <div class="listing-card featured">
+            <span class="card-number">02</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="chess.png" alt="Hermes Basketball" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Tiffany Silver Chess Set</h2>
+                <p class="item-description">Handmade by silversmiths in Rhode Island.</p>
+                <div class="price-section">
+                    <span class="price">$12,900</span>
+                    <a href="#" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Louis Vuitton Skateboard -->
+        <div class="listing-card">
+            <span class="card-number">03</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="brick.png" alt="Louis Vuitton Skateboard" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Supreme Brick</h2>
+                <p class="item-description">Nothing other than a brick with the Supreme logo.</p>
+                <div class="price-section">
+                    <span class="price">$1000</span>
+                    <a href="https://stockx.com/en-gb/supreme-clay-brick-red" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dolce & Gabbana Fridge -->
+        <div class="listing-card">
+            <span class="card-number">04</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="tiffany1.jpg" alt="Dolce & Gabbana Fridge" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Tiffany Salt and Pepper Shakers</h2>
+                <p class="item-description">Made from sterling silver.</p>
+                <div class="price-section">
+                    <span class="price">$700</span>
+                    <a href="https://www.tiffany.co.uk/home-accessories/decor/ep-thumbprint-sterling-silver-decor-254383800.html" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chanel Boomerang -->
+        <div class="listing-card">
+            <span class="card-number">05</span>
+            <span class="sold-badge">SOLD</span>
+            <img src="channel.png" alt="Chanel Boomerang" class="item-image">
+            <div class="item-details">
+                <h2 class="item-title">Chanel Boomerang</h2>
+                <p class="item-description">A $1,325 boomerang that sparked cultural appropriation debates</p>
+                <div class="price-section">
+                    <span class="price">$2,000</span>
+                    <a href="https://www.theguardian.com/fashion/2017/may/16/chanels-2000-boomerang-criticised-for-humiliating-indigenous-australian-culture" class="verify-link">Verify →</a>
+                </div>
+            </div>
+        </div>
+
+
+
+    <script>
+        function switchTab(tab) {
+            // Update button states
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Show/hide sections
+            const clothesSection = document.getElementById('clothes-section');
+            const junkSection = document.getElementById('junk-section');
+            
+            if (tab === 'clothes') {
+                clothesSection.style.display = 'grid';
+                junkSection.style.display = 'none';
+            } else {
+                clothesSection.style.display = 'none';
+                junkSection.style.display = 'grid';
+            }
+        }
+    </script>
 </body>
 </html>
