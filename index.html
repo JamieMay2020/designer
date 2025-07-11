@@ -297,25 +297,18 @@
         .listing-card::before {
             content: '';
             position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, var(--accent-gold), var(--accent-red), var(--accent-gold));
-            border-radius: inherit;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
             opacity: 0;
             transition: opacity 0.5s;
-            z-index: -1;
-            animation: borderRotate 3s linear infinite;
-        }
-
-        @keyframes borderRotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            z-index: 1;
         }
 
         .listing-card:hover::before {
-            opacity: 0.8;
+            opacity: 1;
         }
 
         .listing-card:hover {
