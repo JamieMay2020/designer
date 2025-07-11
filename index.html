@@ -11,15 +11,79 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            position: relative;
-            overflow-x: hidden;
+        :root {
+            --primary-bg: #050505;
+            --card-bg: #0a0a0a;
+            --text-primary: #f5f5f5;
+            --text-secondary: #999;
+            --accent-gold: #d4af37;
+            --accent-red: #ff3333;
+            --border-color: rgba(255,255,255,0.08);
         }
 
-        /* Background texture */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        /* Animated Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 51, 51, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+            animation: gradientShift 20s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            33% { transform: rotate(120deg) scale(1.1); }
+            66% { transform: rotate(240deg) scale(0.95); }
+        }
+
+        /* Noise Texture Overlay */
         body::before {
             content: '';
             position: fixed;
@@ -27,33 +91,35 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 35px,
-                    rgba(255,255,255,.005) 35px,
-                    rgba(255,255,255,.005) 70px
-                );
-            pointer-events: none;
+            opacity: 0.03;
             z-index: 1;
+            pointer-events: none;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgbnVtT2N0YXZlcz0iNCIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==');
         }
 
+        /* Header with Glassmorphism */
         header {
-            background: linear-gradient(180deg, #000 0%, rgba(0,0,0,0.95) 100%);
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             color: #fff;
             padding: 25px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 15px 0;
+            background: rgba(5, 5, 5, 0.95);
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,241 +127,361 @@
 
         h1 {
             font-size: 2rem;
-            font-weight: 200;
-            letter-spacing: 0.5em;
+            font-weight: 100;
+            letter-spacing: 0.8em;
             text-transform: uppercase;
             position: relative;
+            background: linear-gradient(90deg, #fff 0%, #999 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         h1::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: -8px;
             left: 0;
-            width: 50px;
+            width: 60px;
             height: 1px;
-            background: linear-gradient(90deg, #fff 0%, transparent 100%);
+            background: linear-gradient(90deg, var(--accent-gold) 0%, transparent 100%);
+            transition: width 0.3s ease;
+        }
+
+        header:hover h1::after {
+            width: 100px;
         }
 
         .twitter-link {
-            color: #e0e0e0;
+            color: var(--text-primary);
             text-decoration: none;
             font-size: 1.3rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             position: relative;
+            overflow: hidden;
         }
 
         .twitter-link::before {
             content: '';
             position: absolute;
             inset: 0;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.2), transparent);
+            transform: scale(0);
+            transition: transform 0.4s ease;
             border-radius: 50%;
-            transform: scale(0.8);
-            opacity: 0;
-            transition: all 0.3s;
         }
 
         .twitter-link:hover::before {
-            transform: scale(1);
-            opacity: 1;
+            transform: scale(2);
         }
 
         .twitter-link:hover {
-            transform: rotate(-5deg);
+            transform: rotate(-10deg) scale(1.1);
+            color: var(--accent-gold);
         }
 
+        /* Animated Subtitle */
         .subtitle {
             text-align: center;
-            padding: 50px 20px 40px;
-            font-size: 0.9rem;
-            color: #666;
+            padding: 80px 20px 60px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
             font-style: italic;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             text-transform: lowercase;
+            position: relative;
+            overflow: hidden;
         }
 
-        .listings-container {
-            max-width: 1200px;
+        .subtitle::before,
+        .subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+        }
+
+        .subtitle::before { left: 0; }
+        .subtitle::after { right: 0; }
+
+        /* Tab Navigation */
+        .tab-container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px 60px;
+            padding: 0 40px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tab-nav {
+            display: inline-flex;
+            gap: 0;
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 18px 50px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: none;
+            transition: all 0.3s;
+            position: relative;
+            font-family: inherit;
+            overflow: hidden;
+        }
+
+        .tab-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .tab-button:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .tab-button.active {
+            color: var(--text-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .tab-button:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        /* Listings Container */
+        .listings-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px 80px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 60px;
             position: relative;
             z-index: 2;
         }
 
+        /* Advanced Card Design */
         .listing-card {
-            background: #0f0f0f;
+            background: linear-gradient(135deg, #0f0f0f 0%, #0a0a0a 100%);
             border-radius: 0;
             overflow: hidden;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--border-color);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         .listing-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%);
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent-gold), var(--accent-red), var(--accent-gold));
+            border-radius: inherit;
             opacity: 0;
-            transition: opacity 0.4s;
-            z-index: 1;
+            transition: opacity 0.5s;
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .listing-card:hover::before {
-            opacity: 1;
+            opacity: 0.8;
         }
 
         .listing-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-10px) rotateX(5deg);
             box-shadow: 
-                0 20px 40px rgba(0,0,0,0.4),
-                0 0 0 1px rgba(255,255,255,0.1);
-        }
-
-        .listing-card:nth-child(even) {
-            transform: translateY(20px);
-        }
-
-        .listing-card:nth-child(even):hover {
-            transform: translateY(12px);
+                0 30px 60px rgba(0,0,0,0.5),
+                0 0 100px rgba(212, 175, 55, 0.1);
         }
 
         .card-number {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 4rem;
+            top: 30px;
+            left: 30px;
+            font-size: 5rem;
             font-weight: 900;
-            color: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.03);
             z-index: 1;
             line-height: 1;
+            font-style: italic;
         }
 
         .sold-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 30px;
+            right: 30px;
             background: transparent;
-            color: #ff4444;
-            padding: 6px 20px;
-            border: 1px solid #ff4444;
-            font-weight: 400;
-            font-size: 0.8rem;
+            color: var(--accent-red);
+            padding: 8px 24px;
+            border: 1px solid var(--accent-red);
+            font-weight: 300;
+            font-size: 0.75rem;
             text-transform: uppercase;
             z-index: 10;
-            letter-spacing: 0.2em;
+            letter-spacing: 0.3em;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .listing-card:hover .sold-badge {
+            background: var(--accent-red);
+            color: white;
+            transform: scale(1.05);
         }
 
         .item-image {
             width: 100%;
-            height: 320px;
+            height: 380px;
             object-fit: cover;
-            background-color: #0a0a0a;
+            background-color: #000;
             position: relative;
-            filter: grayscale(20%);
-            transition: filter 0.4s;
+            filter: contrast(0.9) brightness(0.9);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .listing-card:hover .item-image {
-            filter: grayscale(0%);
+            filter: contrast(1.1) brightness(1);
+            transform: scale(1.05);
         }
 
         .item-details {
-            padding: 30px;
+            padding: 40px;
             position: relative;
             z-index: 2;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 100%);
         }
 
         .item-title {
-            font-size: 1.1rem;
-            font-weight: 400;
-            margin-bottom: 12px;
-            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 16px;
+            color: var(--text-primary);
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             display: flex;
-            align-items: baseline;
-            gap: 10px;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .listing-card:hover .item-title {
+            letter-spacing: 0.3em;
         }
 
         .item-title::before {
             content: '';
-            width: 20px;
+            width: 30px;
             height: 1px;
-            background: #666;
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
             flex-shrink: 0;
+            transition: width 0.3s;
+        }
+
+        .listing-card:hover .item-title::before {
+            width: 50px;
         }
 
         .item-description {
-            color: #888;
-            margin-bottom: 25px;
-            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
             font-size: 0.95rem;
+            font-weight: 300;
         }
 
         .price-section {
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            position: relative;
+            overflow: hidden;
         }
 
         .price {
-            font-size: 2.8rem;
+            font-size: 3.2rem;
             font-weight: 100;
-            color: #fff;
+            color: var(--text-primary);
             position: relative;
             letter-spacing: -0.02em;
+            transition: all 0.3s;
+        }
+
+        .listing-card:hover .price {
+            transform: scale(1.05);
+            color: var(--accent-gold);
         }
 
         .price::after {
             content: 'USD';
             position: absolute;
             top: 0;
-            right: -35px;
-            font-size: 0.7rem;
-            color: #666;
+            right: -40px;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
             font-weight: 400;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.15em;
         }
 
         .verify-link {
             background-color: transparent;
-            color: #666;
-            padding: 10px 0;
+            color: var(--text-secondary);
+            padding: 12px 0;
             text-decoration: none;
             font-size: 0.85rem;
             transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 0.15em;
             position: relative;
+            overflow: hidden;
         }
 
         .verify-link::after {
             content: '';
             position: absolute;
-            bottom: 8px;
+            bottom: 10px;
             left: 0;
             width: 0;
             height: 1px;
-            background: #fff;
+            background: var(--accent-gold);
             transition: width 0.3s;
         }
 
         .verify-link:hover {
-            color: #fff;
+            color: var(--accent-gold);
+            transform: translateX(5px);
         }
 
         .verify-link:hover::after {
@@ -308,114 +494,62 @@
         }
 
         .listing-card.featured .item-image {
-            height: 400px;
+            height: 480px;
         }
 
         .listing-card.featured .price {
-            font-size: 3.5rem;
+            font-size: 4rem;
         }
 
-        /* Accent elements */
-        .accent-line {
+        /* Floating Particles */
+        .particle {
             position: fixed;
-            width: 1px;
-            height: 100vh;
-            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
-            top: 0;
-            z-index: 0;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 1;
         }
 
-        .accent-line:nth-child(1) { left: 10%; }
-        .accent-line:nth-child(2) { left: 30%; }
-        .accent-line:nth-child(3) { right: 30%; }
-        .accent-line:nth-child(4) { right: 10%; }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
-                letter-spacing: 0.3em;
-            }
-            
-            .listings-container {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-
-            .listing-card.featured {
-                grid-column: span 1;
-            }
-
-            .listing-card:nth-child(even) {
-                transform: none;
-            }
-
-            .price {
-                font-size: 2.2rem;
-            }
+        .particle-1 {
+            width: 4px;
+            height: 4px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            top: 10%;
+            left: 5%;
+            animation: float 15s infinite ease-in-out;
         }
 
-        /* Tab styles */
-        .tab-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 40px;
-            display: flex;
-            justify-content: center;
+        .particle-2 {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            top: 80%;
+            right: 10%;
+            animation: float 20s infinite ease-in-out reverse;
         }
 
-        .tab-nav {
-            display: inline-flex;
-            gap: 0;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.02);
-        }
-
-        .tab-button {
-            background: transparent;
-            border: none;
-            color: #666;
-            padding: 15px 40px;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            font-family: inherit;
-        }
-
-        .tab-button:first-child {
-            border-right: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .tab-button.active {
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .tab-button:hover:not(.active) {
-            color: #aaa;
-        }
-
-        .tab-button.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
+        .particle-3 {
+            width: 3px;
+            height: 3px;
             background: #fff;
+            border-radius: 50%;
+            top: 50%;
+            left: 80%;
+            animation: float 18s infinite ease-in-out;
         }
 
-        #junk-section {
-            display: none;
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            33% { transform: translateY(-30px) translateX(20px); }
+            66% { transform: translateY(20px) translateX(-10px); }
         }
 
         /* Loading animation */
-        @keyframes fadeIn {
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -424,7 +558,7 @@
         }
 
         .listing-card {
-            animation: fadeIn 0.6s ease-out backwards;
+            animation: fadeInUp 0.8s ease-out backwards;
         }
 
         .listing-card:nth-child(1) { animation-delay: 0.1s; }
@@ -433,17 +567,83 @@
         .listing-card:nth-child(4) { animation-delay: 0.4s; }
         .listing-card:nth-child(5) { animation-delay: 0.5s; }
         .listing-card:nth-child(6) { animation-delay: 0.6s; }
-        .listing-card:nth-child(7) { animation-delay: 0.7s; }
-        .listing-card:nth-child(8) { animation-delay: 0.8s; }
-        .listing-card:nth-child(9) { animation-delay: 0.9s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+                letter-spacing: 0.4em;
+            }
+            
+            .listings-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 0 20px 60px;
+            }
+
+            .listing-card.featured {
+                grid-column: span 1;
+            }
+
+            .price {
+                font-size: 2.5rem;
+            }
+
+            .header-content,
+            .tab-container {
+                padding: 0 20px;
+            }
+
+            .cursor,
+            .cursor-dot {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .tab-button {
+                cursor: pointer;
+            }
+        }
+
+        /* Hide sections */
+        #junk-section {
+            display: none;
+        }
+
+        /* Page Load Animation */
+        @keyframes pageLoad {
+            0% {
+                opacity: 0;
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        body {
+            animation: pageLoad 1s ease-out;
+        }
     </style>
 </head>
 <body>
-    <!-- Accent lines -->
-    <div class="accent-line"></div>
-    <div class="accent-line"></div>
-    <div class="accent-line"></div>
-    <div class="accent-line"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Animated Background -->
+    <div class="bg-container">
+        <div class="gradient-bg"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
 
     <header>
         <div class="header-content">
@@ -465,11 +665,11 @@
     </div>
 
     <div class="listings-container" id="clothes-section">
-        <!-- Balenciaga Trash Bag -->
+        <!-- Hermes Crocodile T-shirt -->
         <div class="listing-card featured">
             <span class="card-number">01</span>
             <span class="sold-badge">SOLD</span>
-            <img src="croc.png" alt="Balenciaga Trash Bag" class="item-image">
+            <img src="croc.png" alt="Hermes Crocodile T-shirt" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Hermes Crocodile T-shirt</h2>
                 <p class="item-description">A T-Shirt made from entirely crocodile skin, no logo, no print.</p>
@@ -480,56 +680,56 @@
             </div>
         </div>
 
-        <!-- Tiffany Paper Clip -->
+        <!-- Chanel Coat -->
         <div class="listing-card">
             <span class="card-number">02</span>
             <span class="sold-badge">SOLD</span>
-            <img src="dress.png" alt="Tiffany Paper Clip" class="item-image">
+            <img src="dress.png" alt="Chanel Coat" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Chanel Coat</h2>
                 <p class="item-description">A vintage Chanel evening coat sold</p>
                 <div class="price-section">
                     <span class="price">$380,000</span>
-                    <a href="https://uk.style.yahoo.com/vintage-chanel-evening-coat-sells-161500379.html?utm_source=chatgpt.com&guccounter=1&guce_referrer=aHR0cHM6Ly9jaGF0Z3B0LmNvbS8&guce_referrer_sig=AQAAAJyJMGbM0tRqmhYL5tEnAy0fGOAoUndiW_xJhUoxSL2cEJvnsw1WMY2qHIBau8RIEluJoQdblzmIgDdcld62fYwANe2XT77dk4Bmh5T4Yos_F4tc0UMSQUe8fo4JYsGIRgIu0VGW0Pv82eMhiPm5s1qYLDnI0y9f9ez9h1b50As3" class="verify-link">Verify →</a>
+                    <a href="https://uk.style.yahoo.com/vintage-chanel-evening-coat-sells-161500379.html" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
 
-        <!-- Balenciaga Shopping Bag -->
+        <!-- Christian Dior Pink Fur Coat -->
         <div class="listing-card">
             <span class="card-number">03</span>
             <span class="sold-badge">SOLD</span>
-            <img src="pink.png" alt="Louis Vuitton Skateboard" class="item-image">
+            <img src="pink.png" alt="Christian Dior Pink Fur Coat" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Christian Dior Pink Fur Coat</h2>
                 <p class="item-description">A coat made of raccoon fur dyed pink.</p>
                 <div class="price-section">
                     <span class="price">$65,000</span>
-                    <a href="https://www.1stdibs.com/fashion/clothing/coats-outerwear/christian-dior-john-galliano-fuchsia-evening-coat-fur-trim-fw-2007/id-v_23873612/?gad_source=1&gad_campaignid=19636511994&gbraid=0AAAAADhpJtUHoNQtjKq6PZzc6WNZqMjmS&gclid=Cj0KCQjw1JjDBhDjARIsABlM2Su2bIMrNHUNwMzI5lMHPSZGHQO245ycujwaO_bKb5rrjvhjAZTH-oUaAs7HEALw_wcB&gclsrc=aw.ds" class="verify-link">Verify →</a>
+                    <a href="https://www.1stdibs.com/fashion/clothing/coats-outerwear/christian-dior-john-galliano-fuchsia-evening-coat-fur-trim-fw-2007/id-v_23873612/" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
 
-        <!-- Supreme Brick -->
+        <!-- Hermes Diamond Encrusted Bag -->
         <div class="listing-card">
             <span class="card-number">04</span>
             <span class="sold-badge">SOLD</span>
-            <img src="diamon.png" alt="Supreme Brick" class="item-image">
+            <img src="diamon.png" alt="Hermes Diamond Encrusted Bag" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Hermes Diamond Encrusted Bag</h2>
                 <p class="item-description">A handbag that uses rare himalayan diamonds with crocodile skin.</p>
                 <div class="price-section">
-                    <span class="price">$4550,000</span>
-                    <a href="https://herberkinbags.eu/product/hermes-birkin-25-himalaya-niloticus-crocodile-diamond-encrusted-palladium-hardware/?gad_source=1&gad_campaignid=22460947156&gbraid=0AAAAA_ZNr84j84qCoPudt--LpZVLRafBv&gclid=Cj0KCQjw1JjDBhDjARIsABlM2StnO9RbQ7T1Nth51__jI88qFk95sCWTP-dSa8UOKh1AZkRxoJdW1t4aAgANEALw_wcB" class="verify-link">Verify →</a>
+                    <span class="price">$450,000</span>
+                    <a href="https://herberkinbags.eu/product/hermes-birkin-25-himalaya-niloticus-crocodile-diamond-encrusted-palladium-hardware/" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
 
-        <!-- Gucci Tennis Ball -->
+        <!-- Kiton Crocodile Leather Coat -->
         <div class="listing-card">
             <span class="card-number">05</span>
             <span class="sold-badge">SOLD</span>
-            <img src="coat.png" alt="Gucci Tennis Ball" class="item-image">
+            <img src="coat.png" alt="Kiton Crocodile Leather Coat" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Kiton Crocodile Leather Coat</h2>
                 <p class="item-description">Potentially the most expensive coat in the world at the moment, made from crocodile leather and cashmere.</p>
@@ -540,11 +740,11 @@
             </div>
         </div>
 
-        <!-- Prada Paper Clip -->
+        <!-- LV x Nike Air Force 1 -->
         <div class="listing-card">
             <span class="card-number">06</span>
             <span class="sold-badge">SOLD</span>
-            <img src="air.png" alt="Prada Paper Clip" class="item-image">
+            <img src="air.png" alt="LV x Nike Air Force 1" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">LV x Nike Air Force 1</h2>
                 <p class="item-description">Designed by Virgil Abloh who was artistic director at LV menswear</p>
@@ -555,30 +755,29 @@
             </div>
         </div>
     </div>
-     
 
     <!-- Junk Section (initially hidden) -->
     <div class="listings-container" id="junk-section" style="display: none;">
-        <!-- Supreme Oreo -->
+        <!-- Supreme Punching Bag -->
         <div class="listing-card">
             <span class="card-number">01</span>
             <span class="sold-badge">SOLD</span>
-            <img src="punch.png" alt="Supreme Oreo" class="item-image">
+            <img src="punch.png" alt="Supreme Punching Bag" class="item-image">
             <div class="item-details">
-                <h2 class="item-title">Supreme Oreo Cookie</h2>
+                <h2 class="item-title">Supreme Punching Bag</h2>
                 <p class="item-description">A regular punching bag wrapped in the LV pattern.</p>
                 <div class="price-section">
                     <span class="price">$175,000</span>
-                    <a href="https://www.luxuo.com/style/fashion/hermes-crocodile-t-shirt.html" class="verify-link">Verify →</a>
+                    <a href="#" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
 
-        <!-- Hermes Basketball -->
+        <!-- Tiffany Silver Chess Set -->
         <div class="listing-card featured">
             <span class="card-number">02</span>
             <span class="sold-badge">SOLD</span>
-            <img src="chess.png" alt="Hermes Basketball" class="item-image">
+            <img src="chess.png" alt="Tiffany Silver Chess Set" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Tiffany Silver Chess Set</h2>
                 <p class="item-description">Handmade by silversmiths in Rhode Island.</p>
@@ -589,26 +788,26 @@
             </div>
         </div>
 
-        <!-- Louis Vuitton Skateboard -->
+        <!-- Supreme Brick -->
         <div class="listing-card">
             <span class="card-number">03</span>
             <span class="sold-badge">SOLD</span>
-            <img src="brick.png" alt="Louis Vuitton Skateboard" class="item-image">
+            <img src="brick.png" alt="Supreme Brick" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Supreme Brick</h2>
                 <p class="item-description">Nothing other than a brick with the Supreme logo.</p>
                 <div class="price-section">
-                    <span class="price">$1000</span>
+                    <span class="price">$1,000</span>
                     <a href="https://stockx.com/en-gb/supreme-clay-brick-red" class="verify-link">Verify →</a>
                 </div>
             </div>
         </div>
 
-        <!-- Dolce & Gabbana Fridge -->
+        <!-- Tiffany Salt and Pepper Shakers -->
         <div class="listing-card">
             <span class="card-number">04</span>
             <span class="sold-badge">SOLD</span>
-            <img src="tiffany1.jpg" alt="Dolce & Gabbana Fridge" class="item-image">
+            <img src="tiffany1.jpg" alt="Tiffany Salt and Pepper Shakers" class="item-image">
             <div class="item-details">
                 <h2 class="item-title">Tiffany Salt and Pepper Shakers</h2>
                 <p class="item-description">Made from sterling silver.</p>
@@ -633,17 +832,65 @@
                 </div>
             </div>
         </div>
-
-
+    </div>
 
     <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            cursorDot.style.left = e.clientX - 2 + 'px';
+            cursorDot.style.top = e.clientY - 2 + 'px';
+        });
+
+        // Cursor hover effects
+        const hoverElements = document.querySelectorAll('a, button, .listing-card');
+        hoverElements.forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2)';
+                cursor.style.borderColor = 'var(--accent-gold)';
+            });
+            elem.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.borderColor = 'rgba(255,255,255,0.5)';
+            });
+        });
+
+        // Header scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Parallax effect for cards
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.listing-card');
+            const scrolled = window.pageYOffset;
+            
+            cards.forEach((card, index) => {
+                const rate = (index % 2 === 0) ? scrolled * -0.05 : scrolled * -0.03;
+                card.style.transform = `translateY(${rate}px)`;
+            });
+        });
+
+        // Tab switching
         function switchTab(tab) {
-            // Update button states
             const buttons = document.querySelectorAll('.tab-button');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Show/hide sections
             const clothesSection = document.getElementById('clothes-section');
             const junkSection = document.getElementById('junk-section');
             
@@ -655,6 +902,26 @@
                 junkSection.style.display = 'grid';
             }
         }
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.listing-card');
+            cards.forEach(card => observer.observe(card));
+        });
     </script>
 </body>
 </html>
